@@ -1,5 +1,13 @@
+.vscode
+
 # env libs
 python-webapp-django-env
+
+# migrations
+webapp/polls/migrations/*.py
+# But not 
+!webapp/polls/migrations/__init__.py
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
