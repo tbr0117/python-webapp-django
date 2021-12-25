@@ -1,0 +1,24 @@
+<!-- <div> <span> Pool: </span> <p>{{ Question.QuestionText }}</p> </div>
+<div>
+<span>{{ Question.Department }} </span> <span>{{ Question.Topic }}, </span> <text>{{ Question.Tags }}, </text> <text>{{ Question.PostedOn }}</text>
+</div>
+
+<p>Choices:</p>
+<ui>
+    {% for Choice in Question.choice_set.all %}
+        <li>{{ Choice.ChoiceText }}</li>
+    {% endfor %}
+</ui> -->
+
+<form action="{% url 'polls:vote' Question.QuestionId %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend><h1>{{ Question.QuestionText }}</h1></legend>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        {% for choice in Question.choice_set.all %}
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.ChoiceId }}">
+            <label for="choice{{ forloop.counter }}">{{ choice.ChoiceText }}</label><br>
+        {% endfor %}
+    </fieldset>
+    <input type="submit" value="Vote">
+</form>
