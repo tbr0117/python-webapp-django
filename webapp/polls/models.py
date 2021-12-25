@@ -16,7 +16,8 @@ class Question(models.Model):
         return self.QuestionText
     
     def was_published_recently(self):
-        return self.PostedOn >= timezone.now() - datetime.timedelta(days=1)
+        now = timezone.now()    
+        return now - datetime.timedelta(days=1) <= self.PostedOn <= now
 
     
     def __iter__(self):
@@ -28,7 +29,7 @@ class Choice(models.Model):
     QuestionId = models.ForeignKey(Question, on_delete=models.CASCADE)
     ChoiceId = models.IntegerField()
     ChoiceText = models.CharField(max_length=100)
-    Votes = models.IntegerField(max_length=10)
+    Votes = models.IntegerField()
 
     def __str__(self):
         return self.ChoiceText
