@@ -2,6 +2,8 @@ from django import template
 from django.http import HttpResponse, response, Http404, HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render, get_list_or_404, get_object_or_404
+from django.views import generic
+from django.utils import timezone
 from .models import Choice, Question
 
 from django.template import loader
@@ -15,6 +17,16 @@ def index(request):
     # template = loader.get_template("polls/index.html")
     # return HttpResponse(template.render({latest_questions:latest_questions}, request))
     return render(request, "polls/index.html", {'latest_questions':latest_questions})
+
+
+class IndexView(generic.ListView):
+    template_name="polls/index.html"
+    context_object_name = "latest_questions"
+    def get_queryset(self):
+        return Question.objects.filter(
+            PostedOn__lte=timezone.now()
+        ).order_by("-PostedOn")[:10]
+
 
 def detail(request, QuestionId):
     print(request)
